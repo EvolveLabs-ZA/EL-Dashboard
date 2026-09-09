@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evolve Labs | AI Maturity & Value Diagnostic</title>
+<style>
+@font-face{font-family:'Google Sans';font-style:normal;font-display:swap;font-weight:400 700;src:url('https://cdn.jsdelivr.net/fontsource/fonts/google-sans:vf@5.3.0/latin-wght-normal.woff2') format('woff2-variations');}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root{--gd:#0A3622;--gm:#1B6B4F;--gl:#2D9B6E;--fu:#C2185B;--fl:#F8E1EC;--na:#F7F5F0;--wa:#E8E2D8;--dk:#1A1A1A;--gr:#6B7280;--wh:#FFFFFF;--am:#D97706;--yl:#F59E0B;--bl:#2563EB;--pu:#7C3AED;--ff:'Google Sans','Inter',system-ui,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--ff);background:var(--na);color:var(--dk);min-height:100vh;letter-spacing:-0.01em}
+[contenteditable]{outline:none;cursor:text;border-radius:4px;transition:background 0.2s}
+[contenteditable]:hover{background:rgba(255,255,255,0.15)}
+[contenteditable]:focus{background:rgba(255,255,255,0.25);box-shadow:0 0 0 2px rgba(45,155,110,0.4)}
+.app{max-width:1150px;margin:0 auto;padding:18px}
+.hdr{background:var(--gd);border-radius:14px;padding:18px 26px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.hdr-left .eyebrow{color:var(--gl);font-size:11px;font-weight:600;letter-spacing:3px}
+.hdr-left h1{color:var(--wh);font-family:var(--ff);font-size:26px;font-weight:400;margin-top:4px}
+.hdr-right{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.hdr-input{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:8px 14px;color:white;font-size:14px;font-family:var(--ff);width:200px;text-align:right}
+.hdr-input:focus{outline:none;border-color:var(--gl);background:rgba(255,255,255,0.15)}
+.hdr-input::placeholder{color:rgba(255,255,255,0.4)}
+.hdr-label{color:var(--gl);font-size:10px;margin-top:2px}
+.logo-area{display:flex;align-items:center;gap:12px}
+.logo-area img{max-height:44px;max-width:140px;border-radius:6px}
+.logo-upload-btn{background:rgba(255,255,255,0.1);border:1px dashed rgba(255,255,255,0.3);border-radius:8px;padding:8px 14px;color:var(--gl);font-size:11px;cursor:pointer;font-family:var(--ff);transition:all 0.2s}
+.logo-upload-btn:hover{background:rgba(255,255,255,0.2);border-color:var(--gl)}
+.toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px}
+.tabs{display:flex;gap:4px;background:var(--wh);border-radius:10px;padding:4px;border:1px solid var(--wa);flex-wrap:wrap}
+.tab{padding:8px 16px;font-size:13px;font-weight:500;cursor:pointer;border-radius:7px;border:none;background:transparent;color:var(--gr);font-family:var(--ff);transition:all 0.2s;white-space:nowrap}
+.tab.on{background:var(--gd);color:var(--wh)}
+.tab:hover:not(.on){background:var(--na)}
+.btns{display:flex;gap:8px}
+.btn{padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer;border-radius:8px;border:none;font-family:var(--ff);transition:all 0.2s}
+.btn-p{background:var(--fu);color:var(--wh)}.btn-p:hover{background:#A01648}
+.btn-s{background:var(--wh);color:var(--dk);border:1px solid var(--wa)}.btn-s:hover{background:var(--na)}
+.btn-r{background:var(--wh);color:var(--gr);border:1px solid var(--wa)}.btn-r:hover{background:#FDE8E8;color:var(--fu)}
+.kpis{display:flex;gap:10px;margin-bottom:14px}
+.kpis>.kpi{flex:1;min-width:0}
+.kpi{background:var(--wh);border-radius:12px;padding:14px 16px;border:1px solid var(--wa);position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent,var(--gm))}
+.kpi-l{font-size:11px;color:var(--gr);margin-bottom:6px;font-weight:500;text-transform:uppercase;letter-spacing:0.5px}
+.kpi-v{font-size:28px;font-weight:700;font-family:var(--ff)}
+.kpi-s{font-size:11px;color:#9CA3AF;margin-top:4px}
+.grid2{display:flex;gap:10px;margin-bottom:14px}
+.grid2>.card{flex:1 1 0;min-width:0}
+.kpis>.kpi{min-width:0}
+.card{background:var(--wh);border-radius:12px;padding:16px;border:1px solid var(--wa);position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent,transparent)}
+.card h3{font-size:14px;font-weight:600;margin-bottom:10px}
+.dbar{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.dbar-n{width:130px;font-size:11px;color:var(--gr);text-align:right;font-weight:500}
+.dbar-t{flex:1;height:22px;background:var(--na);border-radius:6px;overflow:hidden}
+.dbar-f{height:100%;border-radius:6px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;transition:width 0.4s ease;min-width:2%}
+.dbar-f span{font-size:10px;font-weight:600;color:var(--wh)}
+.opp{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--na)}
+.opp:last-child{border-bottom:none}
+.opp-n{font-size:12px;font-weight:500}.opp-d{font-size:10px;color:var(--gr)}
+.opp-v{font-size:14px;font-weight:700;color:var(--fu)}
+.sumbar{background:var(--gd);border-radius:12px;padding:14px 20px;display:flex;gap:14px;margin-bottom:14px}
+.sumbar>div{flex:1;min-width:0}
+.sum-l{font-size:10px;color:var(--gl);text-transform:uppercase;letter-spacing:0.5px}
+.sum-v{font-size:17px;font-weight:600;color:var(--wh);margin-top:2px}
+.spanel{background:var(--wh);border-radius:12px;border:1px solid var(--wa);overflow:hidden;margin-bottom:10px}
+.dhdr{padding:14px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background 0.2s}
+.dhdr:hover{background:var(--na)}.dhdr.exp{background:var(--gd);color:var(--wh)}
+.dhdr-t{font-size:15px;font-weight:600}.dhdr-s{font-size:12px;opacity:0.7}
+.dhdr-w{font-size:10px;opacity:0.6;margin-left:8px}
+.dhdr.exp .dhdr-s{color:var(--gl)}
+.dhdr-desc{padding:10px 20px;font-size:11px;color:var(--gr);background:var(--na);border-top:1px solid var(--wa)}
+.dbody{border-top:1px solid var(--wa)}
+.drow{display:flex;align-items:center;padding:10px 20px;border-bottom:1px solid var(--na);gap:12px}
+.drow:last-child{border-bottom:none}
+.drow-n{flex:1;font-size:13px}
+.sbtn{display:flex;gap:3px}
+.sb{width:30px;height:30px;border-radius:6px;border:none;cursor:pointer;font-size:12px;font-weight:600;transition:all 0.15s}
+.sb:hover{transform:scale(1.1)}
+.ldom{background:var(--wh);border-radius:12px;border:1px solid var(--wa);overflow:hidden;margin-bottom:10px}
+.ldh{display:flex;justify-content:space-between;padding:14px 20px;background:var(--na)}
+.ldh-n{font-size:14px;font-weight:600}.ldh-t{font-size:14px;font-weight:700;color:var(--fu)}
+.lrow{display:flex;align-items:center;padding:10px 20px;border-bottom:1px solid var(--na)}
+.lrow:last-child{border-bottom:none}
+.lrow-n{flex:1;font-size:13px}.lrow-s{font-size:11px;color:var(--gr);margin-right:12px}
+.linp{width:130px;padding:6px 10px;border-radius:7px;border:1px solid var(--wa);font-size:13px;text-align:right;font-family:var(--ff)}
+.linp:focus{outline:none;border-color:var(--gm)}
+.ltot{background:var(--fl);border-radius:12px;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.ltot-l{font-size:15px;font-weight:600}.ltot-v{font-size:26px;font-weight:700;color:var(--fu);font-family:var(--ff)}
+.hint{font-size:12px;color:var(--gr);margin-bottom:16px}
+.foot{text-align:center;padding:16px 0;border-top:1px solid var(--wa);margin-top:20px;font-size:10px;color:var(--gr);letter-spacing:1px}
+svg text{font-family:var(--ff)}
+.card svg{max-width:100%;display:block}
+.chart-empty{text-align:center;padding:50px 20px;color:var(--gr);font-size:13px}
+
+/* Maturity journey */
+.journey-card{margin-bottom:10px}
+.jcard-head{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
+.jcard-head h3{margin-bottom:0}
+.jcard-sub{font-size:11px;color:var(--gr)}
+.journey{display:flex;gap:8px;flex-wrap:wrap}
+.jstage{flex:1;min-width:190px;background:var(--na);border:1.5px solid var(--wa);border-radius:10px;padding:12px 14px 16px;position:relative;transition:all 0.2s}
+.jstage.active{background:var(--wh)}
+.jstage-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:7px}
+.jstage h4{font-size:13px;margin-bottom:6px;font-weight:700}
+.jstage ul{margin:0;padding-left:14px;font-size:10.5px;color:var(--gr);line-height:1.45}
+.jstage li{margin-bottom:3px}
+.jtag{position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);color:#fff;font-size:9.5px;font-weight:700;padding:3px 11px;border-radius:20px;white-space:nowrap;letter-spacing:0.3px}
+.jtimeline{position:relative;height:14px;margin:20px 8px 2px;display:flex;justify-content:space-between;align-items:center}
+.jtl-line{position:absolute;left:0;right:0;top:50%;height:2px;background:var(--wa);transform:translateY(-50%)}
+.jtl-dot{width:9px;height:9px;border-radius:50%;background:var(--wa);position:relative;z-index:1;transition:all 0.2s}
+.jtl-dot.active{width:13px;height:13px}
+
+/* Insights */
+.ins-section-head{display:flex;align-items:baseline;gap:12px;margin:4px 0 12px;flex-wrap:wrap}
+.ins-section-head h2{font-size:17px;font-weight:700;color:var(--gd)}
+.ins-section-sub{font-size:11px;color:var(--gr)}
+.ins-card{background:var(--wh);border:1px solid var(--wa);border-radius:12px;padding:16px;margin-bottom:10px}
+.ins-card h3{font-size:14px;font-weight:600;margin-bottom:4px}
+.ins-sub{font-size:11px;color:var(--gr);margin-bottom:12px}
+.ins-summary{min-height:70px;padding:12px;border:1px solid var(--wa);border-radius:8px;font-size:13px;line-height:1.6}
+.ins-grid{display:flex;gap:12px;flex-wrap:wrap}
+.ins-grid>.ins-card{flex:1;min-width:220px}
+.ins-list-item{display:flex;align-items:flex-start;gap:6px;margin-bottom:8px}
+.ili-text{flex:1;padding:8px 10px;border:1px solid var(--wa);border-radius:6px;font-size:12px;min-height:18px;line-height:1.4}
+.ins-rm{background:none;border:none;color:#B0B7C0;cursor:pointer;font-size:15px;padding:2px 4px;line-height:1}
+.ins-rm:hover{color:var(--fu)}
+.ins-add{background:var(--na);border:1px dashed var(--wa);border-radius:6px;padding:6px 12px;font-size:11px;color:var(--gr);cursor:pointer;width:100%}
+.ins-add:hover{background:var(--wa)}
+
+/* Print-only scoring table */
+.print-scores,.print-insights{display:none}
+.print-scores table{width:100%;border-collapse:collapse;font-size:10px}
+.print-scores th{background:var(--gd);color:var(--wh);padding:6px 8px;text-align:left;font-weight:600}
+.print-scores td{padding:5px 8px;border-bottom:1px solid var(--wa)}
+.print-scores tr:nth-child(even) td{background:var(--na)}
+.print-scores .dom-row td{background:var(--wa)!important;font-weight:600;font-size:11px}
+.score-dot{display:inline-block;width:14px;height:14px;border-radius:4px;text-align:center;line-height:14px;font-size:9px;font-weight:700;color:var(--wh)}
+.lk-val{font-weight:600;color:var(--fu)}
+.p2-head{background:var(--gd);border-radius:10px;padding:14px 20px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.p2-head span{color:var(--wh);font-size:14px;font-weight:600}
+.p2-head small{color:var(--gl);font-size:11px}
+.print-insights h4{font-size:12px;font-weight:700;margin:12px 0 6px}
+.print-insights p{font-size:10px;line-height:1.5;color:var(--dk)}
+.print-insights ul{font-size:10px;margin-left:16px;line-height:1.6}
+
+@media print{
+  body{background:white!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  @page{size:A4 landscape;margin:6mm}
+  .app{max-width:100%;padding:0}
+  .toolbar,.btns,.tabs,.logo-upload-btn{display:none!important}
+  [contenteditable]{cursor:default}
+  [contenteditable]:hover,[contenteditable]:focus{background:transparent!important;box-shadow:none!important}
+  .hdr{border-radius:8px;padding:7px 18px;margin-bottom:5px}
+  .hdr-left h1{font-size:20px}
+  .hdr-input{font-size:12px;padding:4px 10px;width:160px}
+  .hdr-label{font-size:9px}
+  .kpis{gap:6px;margin-bottom:5px}
+  .kpi{padding:5px 12px;border-radius:7px;page-break-inside:avoid}
+  .kpi-l{font-size:9px;margin-bottom:3px}
+  .kpi-v{font-size:22px}
+  .kpi-s{font-size:9px;margin-top:2px}
+  .journey-card{margin-bottom:4px;page-break-inside:avoid}
+  .jcard-head{margin-bottom:4px;gap:6px}
+  .jcard-head h3{font-size:11px}
+  .jcard-sub{font-size:8px}
+  .journey{gap:6px}
+  .jstage{padding:5px 7px 8px;border-radius:6px}
+  .jstage-icon{width:18px;height:18px;border-radius:5px;margin-bottom:3px}
+  .jstage-icon svg{width:11px;height:11px}
+  .jstage h4{font-size:9.5px;margin-bottom:3px}
+  .jstage ul{font-size:7.5px;line-height:1.3}
+  .jstage li{margin-bottom:1px}
+  .jtag{font-size:7px;padding:2px 7px;bottom:-7px}
+  .jtimeline{margin:9px 6px 0;height:8px}
+  .jtl-dot{width:6px;height:6px}
+  .jtl-dot.active{width:9px;height:9px}
+  .ins-section-head,.ins-card{display:none!important}
+  .grid2{gap:8px;margin-bottom:4px}
+  .card{padding:6px 12px;border-radius:7px;page-break-inside:avoid}
+  .card h3{font-size:10.5px;margin-bottom:3px}
+  .card svg{max-height:98px;width:auto;max-width:100%;margin:0 auto}
+  .pie-legend-item{font-size:8px!important}
+  .dbar{margin-bottom:3px;gap:6px}
+  .dbar-n{font-size:9px;width:95px}
+  .dbar-t{height:11px}
+  .dbar-f span{font-size:8px}
+  .opp{padding:2px 0}
+  .opp-n{font-size:9.5px}
+  .opp-d{font-size:8px}
+  .opp-v{font-size:11px}
+  .sumbar{padding:6px 16px;gap:10px;margin-bottom:0;border-radius:7px;page-break-inside:avoid}
+  .sum-l{font-size:7.5px}
+  .sum-v{font-size:12px}
+  .foot{display:none}
+  .print-page-break{page-break-before:always;margin-top:0!important;padding-top:0!important}
+  .print-scores{display:block!important}
+  .print-insights{display:block!important}
+  .p2-head{border-radius:8px;padding:10px 16px;margin-bottom:10px}
+  .scores-screen,.value-screen,.dash-insights{display:none!important}
+}
+
+@media(max-width:768px){
+  .kpis{flex-wrap:wrap}
+  .kpis>.kpi{flex:1 1 45%}
+  .grid2{flex-direction:column}
+  .sumbar{flex-wrap:wrap}
+  .sumbar>div{flex:1 1 45%}
+  .hdr{flex-direction:column;gap:16px}
+  .hdr-right{align-items:flex-start}
+  .journey{flex-direction:column}
+  .ins-grid{flex-direction:column}
+}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<input type="file" id="logoFile" accept="image/*" style="display:none">
+<script>
+(function(){
+var C={gd:'#0A3622',gm:'#1B6B4F',gl:'#2D9B6E',fu:'#C2185B',fl:'#F8E1EC',na:'#F7F5F0',wa:'#E8E2D8',dk:'#1A1A1A',gr:'#6B7280',wh:'#FFFFFF',am:'#D97706',yl:'#F59E0B',bl:'#2563EB',pu:'#7C3AED'};
+
+var STAGES=[
+  {name:'Emerging',color:C.fu,bullets:['AI use is ad hoc and isolated, with no formal rollout','No consistent process, measurement, or ownership yet','Foundations still need building, which is normal this early']},
+  {name:'Developing',color:C.am,bullets:['AI is piloted and adopted in parts of the business','Spend is climbing, but the return on it remains unproven','Unmeasured momentum quietly turns into wasted investment']},
+  {name:'Scaling',color:C.yl,bullets:['AI is deployed across multiple functions with defined standards','At this size, scale multiplies both the returns and the hidden losses','What you cannot measure now is what will cost you most']},
+  {name:'Optimised',color:C.gm,bullets:['AI is embedded enterprise-wide, with automation as the default','Performing well across every dimension, including the most demanding','Focus shifts to sustaining performance and staying ahead']}
+];
+
+var S={
+  domains:[
+    {name:"Technology & AI Adoption",short:"Tech & AI Adoption",tiny:"Tech & AI",weight:30,color:C.gm,
+     desc:"Ranges from ad-hoc/experimental use in isolated tools, through piloted use with basic governance, to multi-function deployment, to enterprise-wide embedding with robust governance and continuous optimisation.",
+     dims:[
+      {name:"Breadth of AI tool adoption",sc:0,lk:0},
+      {name:"AI governance & standards",sc:0,lk:0},
+      {name:"Integration & automation depth",sc:0,lk:0},
+      {name:"Enterprise-wide embedding",sc:0,lk:0}
+    ]},
+    {name:"Process & Workflows",short:"Process & Workflows",tiny:"Process",weight:22,color:C.gl,
+     desc:"How well AI is integrated into real operational workflows, as opposed to sitting alongside them.",
+     dims:[
+      {name:"Workflow integration depth",sc:0,lk:0},
+      {name:"Process documentation & standardisation",sc:0,lk:0},
+      {name:"Automation of manual tasks",sc:0,lk:0},
+      {name:"Cross-functional embedding",sc:0,lk:0}
+    ]},
+    {name:"Measurement Maturity",short:"Measurement Maturity",tiny:"Measurement",weight:18,color:C.am,
+     desc:"Whether the organisation has a clear definition of success and is actually measuring against it - distinct from knowing what 'good' looks like versus tracking it.",
+     dims:[
+      {name:"Defined success metrics / KPIs",sc:0,lk:0},
+      {name:"Active tracking against KPIs",sc:0,lk:0},
+      {name:"Baseline & benchmark data",sc:0,lk:0},
+      {name:"Reporting cadence to leadership",sc:0,lk:0}
+    ]},
+    {name:"People",short:"People",tiny:"People",weight:14,color:C.fu,
+     desc:"Executive sponsorship and buy-in, plus adoption/uptake from the people actually using the tools day to day.",
+     dims:[
+      {name:"Executive sponsorship & buy-in",sc:0,lk:0},
+      {name:"Change management investment",sc:0,lk:0},
+      {name:"Day-to-day user adoption",sc:0,lk:0},
+      {name:"AI literacy & training",sc:0,lk:0}
+    ]},
+    {name:"ROI / Value Realisation",short:"ROI / Value",tiny:"ROI / Value",weight:10,color:C.bl,
+     desc:"Whether the organisation is realising and tracking business value from AI - revenue growth or cost savings, depending on what ROI means for that organisation.",
+     dims:[
+      {name:"Revenue impact tracked",sc:0,lk:0},
+      {name:"Cost savings tracked",sc:0,lk:0},
+      {name:"Value attribution methodology",sc:0,lk:0}
+    ]},
+    {name:"Customer Impact",short:"Customer Impact",tiny:"Customer",weight:6,color:C.pu,
+     desc:"Effect on customer experience/value. Lightest weight at this self-assessment stage - more relevant once a client moves into the full paid Diagnostic. Not every project has a customer-facing component.",
+     dims:[
+      {name:"Customer experience improvement",sc:0,lk:0},
+      {name:"Customer-facing AI use cases",sc:0,lk:0},
+      {name:"Customer feedback / NPS impact",sc:0,lk:0}
+    ]}
+  ],
+  tab:'dashboard',exp:null,client:'',date:new Date().toISOString().split('T')[0],logo:null,
+  companyTag:'EVOLVE LABS',dashTitle:'AI Maturity & Value Diagnostic',footNote:'AI Maturity Diagnostic  |  Confidential',
+  insights:{
+    summary:'',
+    strengths:[''],
+    risks:[''],
+    quickWins:[''],
+    midTerm:[''],
+    strategic:['']
+  }
+};
+
+function fR(v){if(v>=1e6)return'R'+(v/1e6).toFixed(1)+'M';if(v>=1e3)return'R'+(v/1e3).toFixed(0)+'k';return'R'+v}
+function esc(s){return String(s).replace(/&/g,'&amp;')}
+function sCol(s){return s<=1?C.fu:s<=2?C.am:s<=3?C.yl:s<=4?C.gl:C.gm}
+function stageIdx(mat){return mat<25?0:mat<50?1:mat<75?2:3}
+
+function calc(){
+  var tw=0,tl=0;
+  var ds=S.domains.map(function(d){
+    var sum=0,cnt=d.dims.length,dl=0;
+    d.dims.forEach(function(x){sum+=x.sc;dl+=x.lk});
+    tl+=dl;
+    var pct=cnt>0?Math.round(sum/(cnt*5)*100):0;
+    tw+=d.weight*pct;
+    return{name:d.short,tiny:d.tiny,full:d.name,score:pct,lk:dl,weight:d.weight,color:d.color}
+  });
+  var mat=Math.round(tw/100);
+  var lb=ds.filter(function(x){return x.lk>0}).map(function(x){return{n:x.name,v:x.lk,c:x.color}});
+  var ad=[];S.domains.forEach(function(d){d.dims.forEach(function(x){ad.push({name:x.name,domain:d.name,sc:x.sc,lk:x.lk,weight:d.weight})})});
+  var qw=ad.filter(function(x){return x.sc>0&&x.sc<=2&&x.lk>0}).sort(function(a,b){return b.lk-a.lk}).slice(0,6);
+  var dc=S.domains.reduce(function(s,d){return s+d.dims.length},0);
+  var sc=ad.filter(function(x){return x.sc>0}).length;
+  return{mat:mat,tl:tl,ds:ds,lb:lb,qw:qw,dc:dc,sc:sc}
+}
+
+function radarSVG(ds){
+  var cx=210,cy=165,r=82,n=ds.length;var out='';
+  out+='<defs><radialGradient id="radarFill" cx="50%" cy="50%" r="75%"><stop offset="0%" stop-color="'+C.gl+'" stop-opacity="0.35"/><stop offset="100%" stop-color="'+C.gm+'" stop-opacity="0.10"/></radialGradient>'
+    +'<filter id="radarGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>';
+  [0.25,0.5,0.75,1].forEach(function(f){
+    var pts=[];for(var i=0;i<n;i++){var a=Math.PI*2*i/n-Math.PI/2;pts.push((cx+r*f*Math.cos(a)).toFixed(1)+','+(cy+r*f*Math.sin(a)).toFixed(1))}
+    out+='<polygon points="'+pts.join(' ')+'" fill="none" stroke="'+C.wa+'" stroke-width="1" stroke-dasharray="'+(f===1?'0':'2,3')+'"/>';
+  });
+  for(var i=0;i<n;i++){var a=Math.PI*2*i/n-Math.PI/2;out+='<line x1="'+cx+'" y1="'+cy+'" x2="'+(cx+r*Math.cos(a)).toFixed(1)+'" y2="'+(cy+r*Math.sin(a)).toFixed(1)+'" stroke="'+C.wa+'" stroke-width="0.75"/>';}
+  var pts=[];ds.forEach(function(d,i){var a=Math.PI*2*i/n-Math.PI/2;var v=d.score/100;pts.push((cx+r*v*Math.cos(a)).toFixed(1)+','+(cy+r*v*Math.sin(a)).toFixed(1))});
+  out+='<polygon points="'+pts.join(' ')+'" fill="url(#radarFill)" stroke="'+C.gm+'" stroke-width="2.5" filter="url(#radarGlow)" stroke-linejoin="round"/>';
+  ds.forEach(function(d,i){var a=Math.PI*2*i/n-Math.PI/2;var v=d.score/100;var px=cx+r*v*Math.cos(a),py=cy+r*v*Math.sin(a);out+='<circle cx="'+px.toFixed(1)+'" cy="'+py.toFixed(1)+'" r="6" fill="'+C.gm+'" opacity="0.15"/><circle cx="'+px.toFixed(1)+'" cy="'+py.toFixed(1)+'" r="3.5" fill="'+C.wh+'" stroke="'+C.gm+'" stroke-width="2"/>'});
+  ds.forEach(function(d,i){
+    var a=Math.PI*2*i/n-Math.PI/2;var lx=cx+(r+26)*Math.cos(a);var ly=cy+(r+26)*Math.sin(a);
+    var anc=Math.abs(Math.cos(a))<0.12?'middle':Math.cos(a)>0?'start':'end';
+    out+='<text x="'+lx.toFixed(1)+'" y="'+(ly+3).toFixed(1)+'" text-anchor="'+anc+'" font-size="10" fill="'+C.gr+'" font-weight="600">'+esc(d.tiny)+'</text>';
+    out+='<text x="'+lx.toFixed(1)+'" y="'+(ly+16).toFixed(1)+'" text-anchor="'+anc+'" font-size="11" fill="'+d.color+'" font-weight="700">'+d.score+'%</text>';
+  });
+  return'<svg viewBox="0 0 420 330" width="100%">'+out+'</svg>'
+}
+
+function pieSVG(lb){
+  if(!lb.length)return'<div class="chart-empty">Enter value-at-stake estimates to see breakdown</div>';
+  var total=lb.reduce(function(s,x){return s+x.v},0);var cx=110,cy=100,R=80,ir=52;var out='';var startA=-Math.PI/2;
+  out+='<defs><filter id="pieShadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-opacity="0.18"/></filter></defs>';
+  lb.forEach(function(item){
+    var sweep=item.v/total*Math.PI*2;var endA=startA+sweep;var large=sweep>Math.PI?1:0;
+    var mid=startA+sweep/2;var gapA=sweep>0.05?0.012:0;
+    var sA=startA+gapA,eA=endA-gapA;
+    var x1=cx+R*Math.cos(sA),y1=cy+R*Math.sin(sA),x2=cx+R*Math.cos(eA),y2=cy+R*Math.sin(eA);
+    var ix1=cx+ir*Math.cos(sA),iy1=cy+ir*Math.sin(sA),ix2=cx+ir*Math.cos(eA),iy2=cy+ir*Math.sin(eA);
+    out+='<path d="M'+x1.toFixed(2)+' '+y1.toFixed(2)+' A'+R+' '+R+' 0 '+large+' 1 '+x2.toFixed(2)+' '+y2.toFixed(2)+' L'+ix2.toFixed(2)+' '+iy2.toFixed(2)+' A'+ir+' '+ir+' 0 '+large+' 0 '+ix1.toFixed(2)+' '+iy1.toFixed(2)+' Z" fill="'+item.c+'" filter="url(#pieShadow)"/>';
+    startA=endA;
+  });
+  out+='<circle cx="'+cx+'" cy="'+cy+'" r="'+(ir-3)+'" fill="'+C.wh+'" opacity="0.001"/>';
+  out+='<text x="'+cx+'" y="'+(cy-3)+'" text-anchor="middle" font-size="16" font-weight="700" fill="'+C.dk+'">'+fR(total)+'</text>';
+  out+='<text x="'+cx+'" y="'+(cy+13)+'" text-anchor="middle" font-size="9" fill="'+C.gr+'" letter-spacing="0.5">TOTAL</text>';
+  var legend=lb.map(function(item){return'<div class="pie-legend-item"><div style="background:'+item.c+';width:9px;height:9px;border-radius:3px;display:inline-block"></div> '+item.n+': '+fR(item.v)+'</div>'}).join('');
+  return'<svg viewBox="0 0 220 200" width="100%" style="max-width:230px;margin:0 auto;display:block">'+out+'</svg><div style="display:flex;flex-wrap:wrap;gap:8px 12px;margin-top:6px;justify-content:center;font-size:10.5px;color:'+C.gr+'">'+legend+'</div>'
+}
+
+var STAGE_ICONS=[
+  '<path d="M9 18h6M10 22h4M12 2a6 6 0 0 0-6 6c0 2.3 1.3 3.4 2 4.6.5.9 1 1.7 1 2.4h6c0-.7.5-1.5 1-2.4.7-1.2 2-2.3 2-4.6a6 6 0 0 0-6-6Z"/>',
+  '<circle cx="8" cy="14" r="3"/><circle cx="16.5" cy="8.5" r="2.4"/><path d="M8 8.5v1M16.5 15.5v1M5.3 12h.2M19.5 8.5h.7"/>',
+  '<path d="M12 3 4 6.5V12c0 5 3.4 8 8 9 4.6-1 8-4 8-9V6.5L12 3Z"/><path d="M9 12l2 2 4-4"/>',
+  '<path d="M3 16.5l6-6 4 4 7.5-7.5"/><path d="M15.5 6h5v5"/>'
+];
+function journeyHTML(mat){
+  var cur=stageIdx(mat);
+  var out='<div class="card journey-card"><div class="jcard-head"><h3 contenteditable="true">Maturity journey</h3><span class="jcard-sub">Where this organisation sits today</span></div><div class="journey">';
+  STAGES.forEach(function(st,i){
+    var active=i===cur;
+    out+='<div class="jstage'+(active?' active':'')+'" style="'+(active?'border-color:'+st.color+';box-shadow:0 8px 22px -8px '+st.color+'70':'')+'">'
+      +'<div class="jstage-icon" style="background:'+st.color+'1a;color:'+st.color+'"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+STAGE_ICONS[i]+'</svg></div>'
+      +'<h4 style="color:'+st.color+'">'+st.name+'</h4><ul>';
+    st.bullets.forEach(function(b){out+='<li>'+b+'</li>'});
+    out+='</ul>'+(active?'<div class="jtag" style="background:'+st.color+'">YOU ARE HERE</div>':'')+'</div>';
+  });
+  out+='</div><div class="jtimeline"><div class="jtl-line"></div>';
+  STAGES.forEach(function(st,i){
+    var active=i===cur;
+    out+='<div class="jtl-dot'+(active?' active':'')+'" style="'+(active?'background:'+st.color+';box-shadow:0 0 0 5px '+st.color+'26':'')+'"></div>';
+  });
+  out+='</div></div>';
+  return out;
+}
+
+function printScoresHTML(m){
+  var rows='';
+  S.domains.forEach(function(d,di){
+    var ds=m.ds[di];
+    rows+='<tr class="dom-row"><td colspan="2">'+d.name+'</td><td></td><td>'+ds.score+'%</td><td></td></tr>';
+    d.dims.forEach(function(dim){
+      var dots='';for(var n=1;n<=5;n++){var c=dim.sc>=n?sCol(n):C.wa;dots+='<span class="score-dot" style="background:'+c+';margin-right:2px">'+n+'</span> '}
+      var lkStr=dim.lk>0?'<span class="lk-val">'+fR(dim.lk)+'</span>':'-';
+      rows+='<tr><td style="padding-left:20px">'+dim.name+'</td><td></td><td>'+dots+'</td><td style="text-align:center">'+(dim.sc||'-')+'</td><td style="text-align:right">'+lkStr+'</td></tr>';
+    });
+  });
+  return'<div class="print-page-break print-scores"><div class="p2-head"><span>'+S.companyTag+' | Detailed Scoring Matrix</span><small>'+(S.client||'Client')+'  |  '+S.date+'</small></div><table><thead><tr><th style="width:38%">Dimension</th><th style="width:5%"></th><th style="width:25%">Score</th><th style="width:12%;text-align:center">Value</th><th style="width:20%;text-align:right">Value at stake (R)</th></tr></thead><tbody>'+rows+'</tbody></table><div style="margin-top:12px;display:flex;justify-content:space-between;align-items:center;background:'+C.fl+';padding:10px 16px;border-radius:8px"><span style="font-size:12px;font-weight:600">Total estimated value at stake</span><span style="font-size:18px;font-weight:700;color:'+C.fu+';font-family:Google Sans,sans-serif">'+fR(m.tl)+'</span></div><div style="margin-top:8px;display:flex;gap:16px;font-size:9px;color:'+C.gr+'"><span><span class="score-dot" style="background:'+C.fu+'">1</span> Emerging</span><span><span class="score-dot" style="background:'+C.am+'">2</span> Developing</span><span><span class="score-dot" style="background:'+C.yl+'">3</span> Scaling</span><span><span class="score-dot" style="background:'+C.gl+'">4</span> Scaling+</span><span><span class="score-dot" style="background:'+C.gm+'">5</span> Optimised</span></div></div>'
+}
+
+function printInsightsHTML(){
+  var ins=S.insights;
+  function ul(arr){return'<ul>'+arr.filter(function(x){return x.trim()}).map(function(x){return'<li>'+x+'</li>'}).join('')+'</ul>'}
+  return'<div class="print-page-break print-insights"><div class="p2-head"><span>'+S.companyTag+' | Qualitative Insights &amp; Recommendations</span><small>'+(S.client||'Client')+'  |  '+S.date+'</small></div>'
+  +'<h4>Executive summary</h4><p>'+(ins.summary||'-')+'</p>'
+  +'<h4>Key strengths</h4>'+ul(ins.strengths)
+  +'<h4>Key risks &amp; gaps</h4>'+ul(ins.risks)
+  +'<h4>Quick wins (0-3 months)</h4>'+ul(ins.quickWins)
+  +'<h4>Medium-term actions (3-9 months)</h4>'+ul(ins.midTerm)
+  +'<h4>Strategic priorities (9+ months)</h4>'+ul(ins.strategic)
+  +'</div>';
+}
+
+function render(){
+  var m=calc();
+  var logoHTML=S.logo?'<img src="'+S.logo+'" alt="Logo">':'';
+  var logoBtn=S.logo?'<button class="logo-upload-btn" onclick="document.getElementById(\'logoFile\').click()">Change logo</button>':'<button class="logo-upload-btn" onclick="document.getElementById(\'logoFile\').click()">+ Upload logo</button>';
+
+  var h='<div class="hdr"><div class="hdr-left"><div class="logo-area">'+logoHTML+'<div><div class="eyebrow" contenteditable="true" id="compTag">'+S.companyTag+'</div><h1 contenteditable="true" id="dashTitle">'+S.dashTitle+'</h1></div></div></div><div class="hdr-right">'+logoBtn+'<div><input class="hdr-input" type="text" value="'+S.client+'" placeholder="Enter client name" id="ciInput"><div class="hdr-label">Client</div></div><div><input class="hdr-input" type="date" value="'+S.date+'" id="diInput" style="font-size:12px"><div class="hdr-label">Report date</div></div></div></div>';
+
+  var tb='<div class="toolbar"><div class="tabs"><button class="tab '+(S.tab==='dashboard'?'on':'')+'" onclick="W.st(\'dashboard\')">Dashboard</button><button class="tab '+(S.tab==='scores'?'on':'')+'" onclick="W.st(\'scores\')">Score input</button><button class="tab '+(S.tab==='value'?'on':'')+'" onclick="W.st(\'value\')">Value at stake</button></div><div class="btns"><button class="btn btn-r" onclick="W.reset()">Reset all</button><button class="btn btn-s" onclick="W.sample()">Load sample</button><button class="btn btn-p" onclick="W.pdf()">Export PDF</button></div></div>';
+
+  var dashBody=dashHTML(m);
+  var screenBody='';
+  if(S.tab==='dashboard')screenBody=dashBody;
+  else if(S.tab==='scores')screenBody='<div class="scores-screen">'+scoresHTML(m)+'</div>';
+  else screenBody='<div class="value-screen">'+valueHTML(m)+'</div>';
+
+  var printPage2=printScoresHTML(m);
+  var printPage3=printInsightsHTML();
+
+  var foot='<div class="foot"><span contenteditable="true" id="compTag2">'+S.companyTag+'</span> &nbsp;|&nbsp; <span contenteditable="true" id="footNote">'+S.footNote+'</span> &nbsp;|&nbsp; '+(S.client||'Client Name')+' &nbsp;|&nbsp; '+S.date+'</div>';
+
+  document.getElementById('app').innerHTML=h+tb+screenBody+printPage2+printPage3+foot;
+  document.getElementById('ciInput').addEventListener('input',function(e){S.client=e.target.value});
+  document.getElementById('diInput').addEventListener('input',function(e){S.date=e.target.value});
+  var ct=document.getElementById('compTag');if(ct)ct.addEventListener('blur',function(){S.companyTag=this.innerText});
+  var dt=document.getElementById('dashTitle');if(dt)dt.addEventListener('blur',function(){S.dashTitle=this.innerText});
+  var fn=document.getElementById('footNote');if(fn)fn.addEventListener('blur',function(){S.footNote=this.innerText});
+}
+
+function dashHTML(m){
+  var stageName=STAGES[stageIdx(m.mat)].name;
+  var kpis='<div class="kpis">';
+  [{l:'Overall maturity',v:m.mat+'%',c:sCol(Math.ceil(m.mat/20)||1),s:stageName+' stage'},{l:'Total value at stake',v:fR(m.tl),c:C.fu,s:m.sc+' of '+m.dc+' dimensions scored'},{l:'Heaviest gap area',v:m.ds.slice().sort(function(a,b){return a.score-b.score})[0].name,c:C.am,s:'Lowest scoring weighted domain'},{l:'Quick wins identified',v:m.qw.length,c:C.gm,s:'Low-scoring, high-value dimensions'}].forEach(function(k){
+    kpis+='<div class="kpi" style="--accent:'+k.c+'"><div class="kpi-l" contenteditable="true">'+k.l+'</div><div class="kpi-v" style="color:'+k.c+';font-size:'+(String(k.v).length>10?'18px':'28px')+'">'+k.v+'</div><div class="kpi-s" contenteditable="true">'+k.s+'</div></div>';
+  });kpis+='</div>';
+
+  var journey=journeyHTML(m.mat);
+
+  var insightsBlock='<div class="dash-insights">'+insightsHTML()+'</div>';
+
+  var charts='<div class="grid2"><div class="card" style="--accent:'+C.gm+'"><h3 contenteditable="true">Maturity by dimension</h3>'+radarSVG(m.ds)+'</div><div class="card" style="--accent:'+C.fu+'"><h3 contenteditable="true">Value-at-stake breakdown</h3>'+pieSVG(m.lb)+'</div></div>';
+
+  var bars='<div class="grid2"><div class="card"><h3 contenteditable="true">Dimension scores (weighted)</h3>';
+  m.ds.forEach(function(d){bars+='<div class="dbar"><div class="dbar-n">'+d.name+'</div><div class="dbar-t"><div class="dbar-f" style="width:'+Math.max(d.score,3)+'%;background:linear-gradient(90deg,'+d.color+'cc,'+d.color+')"><span>'+d.score+'%</span></div></div></div>'});
+  bars+='</div><div class="card"><h3 contenteditable="true">Top leakage / opportunity areas</h3>';
+  if(m.qw.length){m.qw.forEach(function(q){bars+='<div class="opp"><div><div class="opp-n">'+q.name+'</div><div class="opp-d">'+q.domain+'</div></div><div class="opp-v">'+fR(q.lk)+'</div></div>'})}
+  else{bars+='<div class="chart-empty">Score dimensions and add value estimates to see opportunities</div>'}
+  bars+='</div></div>';
+
+  var sum='<div class="sumbar"><div><div class="sum-l" contenteditable="true">Maturity stage</div><div class="sum-v">'+stageName+'</div></div><div><div class="sum-l" contenteditable="true">Dimensions scored</div><div class="sum-v">'+m.sc+' / '+m.dc+'</div></div><div><div class="sum-l" contenteditable="true">Quick wins identified</div><div class="sum-v">'+m.qw.length+'</div></div><div><div class="sum-l" contenteditable="true">Total value at stake</div><div class="sum-v">'+fR(m.tl)+'</div></div></div>';
+  return kpis+journey+insightsBlock+charts+bars+sum;
+}
+
+function scoresHTML(m){
+  var out='<div class="hint" contenteditable="true">Click the score buttons (1 to 5) for each dimension. 1 = Emerging, 2 = Developing, 3 = Scaling, 4 = Scaling+, 5 = Optimised.</div>';
+  S.domains.forEach(function(d,di){
+    var ds=m.ds[di];
+    out+='<div class="spanel"><div class="dhdr'+(S.exp===di?' exp':'')+'" onclick="W.tog('+di+')"><span class="dhdr-t">'+d.name+'</span><span class="dhdr-s">'+ds.score+'%</span></div>';
+    if(S.exp===di){out+='<div class="dhdr-desc">'+d.desc+'</div><div class="dbody">';d.dims.forEach(function(dim,dimi){
+      out+='<div class="drow"><div class="drow-n">'+dim.name+'</div><div class="sbtn">';
+      [1,2,3,4,5].forEach(function(n){out+='<button class="sb" style="background:'+(dim.sc>=n?sCol(n):C.wa)+';color:'+(dim.sc>=n?C.wh:C.gr)+'" onclick="W.ss('+di+','+dimi+','+n+')">'+n+'</button>'});
+      out+='</div></div>'});out+='</div>'}out+='</div>'});
+  return out;
+}
+
+function valueHTML(m){
+  var out='<div class="hint" contenteditable="true">Enter estimated annual value at stake (rands) for each dimension - the revenue or cost impact of closing the gap. Leave at 0 if not applicable.</div>';
+  S.domains.forEach(function(d,di){
+    var dt=d.dims.reduce(function(s,x){return s+x.lk},0);
+    out+='<div class="ldom"><div class="ldh"><span class="ldh-n">'+d.name+'</span><span class="ldh-t">'+fR(dt)+'</span></div>';
+    d.dims.forEach(function(dim,dimi){out+='<div class="lrow"><div class="lrow-n">'+dim.name+'</div><div class="lrow-s">Score: '+(dim.sc||'-')+'/5</div><div style="display:flex;align-items:center;gap:4px"><span style="font-size:12px;color:var(--gr)">R</span><input type="number" class="linp" value="'+(dim.lk||'')+'" placeholder="0" onchange="W.sl('+di+','+dimi+',this.value)" onfocus="this.select()"></div></div>'});
+    out+='</div>'});
+  out+='<div class="ltot"><span class="ltot-l" contenteditable="true">Total estimated value at stake</span><span class="ltot-v">'+fR(m.tl)+'</span></div>';
+  return out;
+}
+
+function insListHTML(section,label,items){
+  var out='<div class="ins-card"><h3>'+label+'</h3>';
+  items.forEach(function(item,idx){
+    out+='<div class="ins-list-item"><div class="ili-text" contenteditable="true" onblur="W.insEdit(\''+section+'\','+idx+',this.innerText)">'+item+'</div><button class="ins-rm" onclick="W.insRemove(\''+section+'\','+idx+')">✕</button></div>';
+  });
+  out+='<button class="ins-add" onclick="W.insAdd(\''+section+'\')">+ Add item</button></div>';
+  return out;
+}
+
+function insightsHTML(){
+  var ins=S.insights;
+  var out='<div class="ins-section-head"><h2 contenteditable="true">Key insights &amp; recommendations</h2><span class="ins-section-sub">The narrative behind the scores - included in the exported report</span></div>';
+  out+='<div class="ins-card"><h3>Executive summary</h3><div class="ins-sub">A short narrative overview of where the organisation stands and why.</div><div class="ins-summary" contenteditable="true" onblur="W.insSummary(this.innerText)">'+(ins.summary||'Click to add a summary of the organisation\'s current AI maturity, key themes, and overall trajectory...')+'</div></div>';
+  out+='<div class="ins-grid">'+insListHTML('strengths','Key strengths',ins.strengths)+insListHTML('risks','Key risks & gaps',ins.risks)+'</div>';
+  out+='<div class="ins-grid">'+insListHTML('quickWins','Quick wins (0-3 months)',ins.quickWins)+insListHTML('midTerm','Medium-term (3-9 months)',ins.midTerm)+insListHTML('strategic','Strategic (9+ months)',ins.strategic)+'</div>';
+  return out;
+}
+
+window.W={
+  st:function(t){S.tab=t;render()},
+  tog:function(i){S.exp=S.exp===i?null:i;render()},
+  ss:function(di,dimi,v){S.domains[di].dims[dimi].sc=v;render()},
+  sl:function(di,dimi,v){S.domains[di].dims[dimi].lk=Number(v)||0;render()},
+  insSummary:function(v){S.insights.summary=v},
+  insAdd:function(section){S.insights[section].push('');render();},
+  insEdit:function(section,idx,v){S.insights[section][idx]=v;},
+  insRemove:function(section,idx){S.insights[section].splice(idx,1);if(S.insights[section].length===0)S.insights[section].push('');render();},
+  reset:function(){if(!confirm('Reset all scores, values and insights?'))return;S.domains.forEach(function(d){d.dims.forEach(function(x){x.sc=0;x.lk=0})});S.exp=null;S.insights={summary:'',strengths:[''],risks:[''],quickWins:[''],midTerm:[''],strategic:['']};render()},
+  sample:function(){
+    var sc=[[3,2,3,2],[2,3,2,2],[2,2,3,1],[3,2,2,2],[1,2,2],[2,1,1]];
+    var lk=[[620000,380000,540000,290000],[410000,260000,720000,180000],[350000,590000,220000,0],[0,0,0,0],[480000,650000,0],[210000,140000,0]];
+    S.domains.forEach(function(d,i){d.dims.forEach(function(x,j){x.sc=sc[i][j];x.lk=lk[i][j]})});
+    S.insights={
+      summary:'Sample Corp shows solid early traction with AI tools inside individual teams, but adoption has not yet translated into standardised workflows or enterprise-wide governance. Momentum exists - the priority now is consolidating it into measurable, repeatable value.',
+      strengths:['Strong grassroots tool adoption within customer service and marketing','Executive sponsor identified for the AI programme','Early pilots in Process & Workflows showing promising cycle-time gains'],
+      risks:['No consistent KPI framework to prove ROI to the board','Governance and data standards lag behind tool rollout speed','Customer-facing use cases remain largely unexplored'],
+      quickWins:['Stand up a lightweight AI governance checklist for new tools','Define 3-5 KPIs per function and start baseline tracking','Run a training session for frontline teams on approved AI tools'],
+      midTerm:['Consolidate duplicate AI tools into a shortlist of approved platforms','Build a monthly AI value-realisation report for leadership','Pilot one customer-facing AI use case with clear success metrics'],
+      strategic:['Embed AI adoption targets into functional leadership scorecards','Move from pilot governance to enterprise-wide AI policy','Build a dedicated ROI attribution model tied to finance reporting']
+    };
+    S.client='Sample Corp (Pty) Ltd';S.tab='dashboard';render()},
+  pdf:function(){S.tab='dashboard';render();setTimeout(function(){window.print()},400)}
+};
+
+document.getElementById('logoFile').addEventListener('change',function(e){
+  var file=e.target.files[0];if(!file)return;
+  var reader=new FileReader();reader.onload=function(ev){S.logo=ev.target.result;render()};reader.readAsDataURL(file);
+});
+render();
+})();
+</script>
+</body>
+</html>
