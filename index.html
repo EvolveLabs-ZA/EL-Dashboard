@@ -339,7 +339,7 @@ var STAGE_IMAGES=[
 function journeyHTML(mat){
   var cur=stageIdx(mat);
   var stName=STAGES[cur].name;
-  var out='<div class="card journey-card"><div class="jcard-head"><h3 contenteditable="true">Maturity journey</h3><span class="jcard-sub">Where this organisation sits today - '+stName+' stage</span></div>';
+  var out='<div class="card journey-card"><div class="jcard-head"><h3 contenteditable="true">Maturity journey</h3><span class="jcard-sub">Where your organisation sits today - '+stName+' stage</span></div>';
   out+='<img class="journey-img" src="'+STAGE_IMAGES[cur]+'" alt="Maturity journey: '+stName+'">';
   out+='</div>';
   return out;
